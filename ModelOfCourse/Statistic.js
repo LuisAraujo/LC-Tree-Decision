@@ -23,7 +23,6 @@ function Statistic(student){
         if(disciplinesRisk != undefined)
             this.disciplinesRisk = disciplinesRisk;
 
-
     }
 
     var semesters = student.course.getSemesters();
@@ -71,7 +70,7 @@ function Statistic(student){
 
     name = "EXATAS";
     success = student.course.getNumberDisciplineByAreaWithClasses(Area.EXA, student.getClassesCoursedWithSucess());
-    retention = student.course.getNumberDisciplineByAreaWithClasses(Area.EXA, student.getClassesCoursedWithRetetion());
+    retention = student.course.getNumberDisciplineByAreaWithClasses(Area.EXA, dr);
     disciplinesRisk = student.course.getDisciplinesByArea(Area.EXA, student.course.getDisciplineRisk(dr));
     porcentSucess = (100*success)/student.course.getNumberDisciplineByArea(Area.EXA);
     mostApproval =  student.course.getNumberDisciplineByArea(Area.EXA) - success;
@@ -84,7 +83,7 @@ function Statistic(student){
 
     name = "LINGUAGENS"
     success = student.course.getNumberDisciplineByAreaWithClasses(Area.LIN, student.getClassesCoursedWithSucess());
-    retention = student.course.getNumberDisciplineByAreaWithClasses(Area.LIN, student.getClassesCoursedWithRetetion());
+    retention = student.course.getNumberDisciplineByAreaWithClasses(Area.LIN, dr);
     disciplinesRisk = student.course.getDisciplinesByArea(Area.LIN, student.course.getDisciplineRisk(dr));
     porcentSucess = (100*success)/student.course.getNumberDisciplineByArea(Area.LIN);
     mostApproval =  student.course.getNumberDisciplineByArea(Area.LIN) - success;
@@ -96,7 +95,7 @@ function Statistic(student){
 
     name = "HUMANAS";
     success = student.course.getNumberDisciplineByAreaWithClasses(Area.HUM, student.getClassesCoursedWithSucess());
-    retention = student.course.getNumberDisciplineByAreaWithClasses(Area.HUM, student.getClassesCoursedWithRetetion());
+    retention = student.course.getNumberDisciplineByAreaWithClasses(Area.HUM, dr);
     disciplinesRisk = student.course.getDisciplinesByArea(Area.HUM, student.course.getDisciplineRisk(dr));
     porcentSucess =  (100*success)/student.course.getNumberDisciplineByArea(Area.HUM);
     mostApproval =  student.course.getNumberDisciplineByArea(Area.HUM) - success;

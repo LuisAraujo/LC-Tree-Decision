@@ -49,3 +49,28 @@ Mention.getWeightMention = function(mention){
 
     return 0;
 }
+
+
+Mention.getMention = function(mention){
+
+    if(mention == this.APR)
+        return this.APR;
+    if(mention == this.DIP)
+        return this.DIP;
+    if(mention == this.APD)
+        return this.APD;
+    if(mention ==  this.RPF)
+        return this.RPF;
+    if(mention == this.TTM)
+        return dis.TTM;
+    if(mention == this.RPC)
+        return this.RPC;
+    if(mention == this.TPM)
+        return this.TPM;
+    if(mention == this.DM)
+        return this.DM;
+    if(mention == this.INC)
+        return this.INC;
+
+    return undefined;
+}

@@ -1,17 +1,19 @@
-function readTextFile(file)
-{
-    var rawFile = new XMLHttpRequest();
-    rawFile.open("GET", file, false);
-    rawFile.onreadystatechange = function ()
-    {
-        if(rawFile.readyState === 4)
-        {
-            if(rawFile.status === 200 || rawFile.status == 0)
-            {
-                var allText = rawFile.responseText;
-                alert(allText);
-            }
+function readFileByLine(p, callback){
+    var file = p.files[0];
+    var reader = new FileReader();
+    var arrDatas = [];
+
+    reader.onload = function(progressEvent){
+        // By lines
+        var lines = this.result.split('\n');
+        for(var line = 0; line < lines.length; line++){
+            arrDatas[arrDatas.length]= lines[line];
         }
-    }
-    rawFile.send(null);
-}
+
+        callback(arrDatas);
+    };
+
+    reader.readAsText(file);
+
+
+};

@@ -126,7 +126,7 @@ Course.prototype.getNumberDisciplineByAreaWithDisciplines= function(area, discip
 
 
 /*Course.addStudent
- * this method allows add discipline in course, only permitted elements of type Discipline
+ * this method allows add student in course, only permitted elements of type Student
  * */
 Course.prototype.addStudent = function(studentes){
     if(studentes.__proto__.constructor.name == "Students"){
@@ -137,6 +137,27 @@ Course.prototype.addStudent = function(studentes){
 
 };
 
+/*Course.findStudent
+ * this method allows find student by id in course
+ * */
+Course.prototype.findStudent = function(id){
+    for(var i=0; i<this.studentes.length; i++)
+      if(this.studentes[i].id == id)
+        return this.studentes[i];
+
+    return undefined;
+
+};
+
+/*Course.getStudents
+ * this method return all studentes in course
+ * */
+Course.prototype.getStudents = function(){
+    return this.studentes;
+};
+
+
+
 
 /*Course.getSemesters
  * this method return all semesters of course
@@ -146,22 +167,35 @@ Course.prototype.getSemesters = function(){
 }
 
 
+/*Course.findSemester
+ * this method allows find semesters by id
+ * */
+Course.prototype.findSemester = function(id){
+    for(var i=0; i<this.semesters.length; i++)
+      if(this.semesters[i].id == id)
+        return this.semesters[i];
+
+    return null;
+}
+
+
 /*Course.getDisciplineRisk
  * this method retorn all discipline in Risk. Exemple if number of time reproof  -  limiteReproof = 1
  * */
 Course.prototype.getDisciplineRisk = function(disciplines){
-    disciplinesRisk = [];
-    disciplinesCount = [];
+    var disciplinesRisk = [];
+    var disciplinesCount = [];
 
     for(var i=0; i<disciplines.length; i++){
         var flagHave =0;
         for(var j = 0; j<disciplinesCount.length; j++){
-            //console.log("o", disciplinesCount[j,0])
+
             if(disciplinesCount[j][0].idDiscipline == disciplines[i].idDiscipline){
 
                 disciplinesCount[j][1]++;
-                //console.log("add", disciplines[i], disciplinesCount[j][1])
 
+                //console.log("add", disciplines[i], disciplinesCount[j][1])
+                //console.log(this.limiteRetentionByDiscipline, disciplinesCount[j][1]);
                 if( this.limiteRetentionByDiscipline - disciplinesCount[j][1] <= 1){
                     //console.log("risco");
                     var flagHave2=0;
@@ -176,20 +210,20 @@ Course.prototype.getDisciplineRisk = function(disciplines){
                         disciplinesRisk[disciplinesRisk.length] = this.findDiscipline(disciplines[i].idDiscipline);
                     }
                 }
-
-
                 flagHave = 1;
             }
         }
 
         if(flagHave == 0){
 
-            disciplinesCount[disciplinesCount.length] = [disciplines[i], 0];
+            disciplinesCount[disciplinesCount.length] = [disciplines[i], 1];
             //console.log("insert", disciplinesCount[disciplinesCount.length-1][1])
 
         }
 
     }
+
+
 
 
     //console.log(disciplinesRisk);

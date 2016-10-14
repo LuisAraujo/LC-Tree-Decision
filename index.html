@@ -1,20 +1,48 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 5px;
+            text-align: left;
+        }
+    </style>
+
     <title></title>
-    <script src="queue.js"></script>
-    <script src="tree.js"></script>
-    <script src="Student.js"></script>
-    <script src="Class.js"></script>
-    <script src="Course.js"></script>
-    <script src="Discipline.js"></script>
-    <script src="Semester.js"></script>
-    <script src="Statistic.js"></script>
-    <script src="Mention.js"></script>
-    <script src="Area.js"></script>
+    <script src="StructureData/queue.js"></script>
+    <script src="StructureData/tree.js"></script>
+    <script src="ModelOfCourse/Student.js"></script>
+    <script src="ModelOfCourse/Class.js"></script>
+    <script src="ModelOfCourse/Course.js"></script>
+    <script src="ModelOfCourse/Discipline.js"></script>
+    <script src="ModelOfCourse/Semester.js"></script>
+    <script src="ModelOfCourse/Statistic.js"></script>
+    <script src="ModelOfCourse/Mention.js"></script>
+    <script src="ModelOfCourse/Area.js"></script>
+    <script src="readerFile.js"></script>
     <script src="main.js"></script>
+
 </head>
 <body>
-
+<h3>Select file data for learnig supervisioned</h3>
+<input type="file" name="file" id="fileSupervisioned" value="">
+<h3>Select file data</h3>
+<input type="file" name="file" id="fileClassific" value="">
+<h3>All students in course</h3>
+Students id:<select id="studentslist" name="a"></select> <button id="getDataStudent">get data of student</button>
+<br><br>
+<span id="tdc">Total amount disciplines Coursed:</span> <br>
+<span id="tda">Total amount disciplines Approved:</span> <br>
+<span id="tdr">Total amount disciplines Disapproved:</span> <br>
+<span id="adc">Average of disciplines coursed by semester:</span> <br>
+<table id="tabledata">
+    <tr >
+        <th>Area</th><th>Approved</th><th>Disapproved</th><th>Conclued</th><th>Not Conclued</th><th>Sum discipline not coursed in semester</th><th>Disciplines Risk</th>
+    </tr>
+</table>
 </body>
 </html>

@@ -7,49 +7,196 @@ window.onload = function(){
     console.log(tree._root);*/
 
     //Creating a new course (id, name, semester initial)
-    var course = new Course(1, "LC", "2011.1");
+    course = new Course(1, "LC", "2011.1");
+    courseSupervisioned = new Course(1, "LC", "2011.1");
     //Crating disciplines of course
     createDisciplines(course);
+    createDisciplines(courseSupervisioned);
 
     //Crating a new Semester (id)
     var sem = new Semester("2011.1");
+    var semSupervisioned = new Semester("2011.1");
     //Adding semester in course
     course.addSemester(sem);
+    courseSupervisioned.addSemester(semSupervisioned);
+
     //Creating classes and adding in semester (idDicipline, timetable, mention)
     sem.addClasse(new Class(3, [["seg", 2],["ter", 2]],null));
+    semSupervisioned.addClasse(new Class(3, [["seg", 2],["ter", 2]],null));
+
     sem.addClasse(new Class(1, [["seg", 1],["ter", 1]],null));
+    semSupervisioned.addClasse(new Class(1, [["seg", 1],["ter", 1]],null));
+
     sem.addClasse(new Class(2, [["qui", 2],["qua", 2]],null));
+    semSupervisioned.addClasse(new Class(2, [["qui", 2],["qua", 2]],null));
+
     sem.addClasse(new Class(4, [["qui", 1],["sex", 1]],null));
+    semSupervisioned.addClasse(new Class(4, [["qui", 1],["sex", 1]],null));
+
     sem.addClasse(new Class(11,[["seg", 2],["ter", 1]],null));
+    semSupervisioned.addClasse(new Class(11,[["seg", 2],["ter", 1]],null));
+
 
     //Creating another semester
     sem = new Semester("2011.2");
+    semSupervisioned = new Semester("2011.2");
+
     course.addSemester(sem);
+    courseSupervisioned.addSemester(semSupervisioned);
+
     sem.addClasse(new Class(3, [["seg", 2],["ter", 2]],null));
+    semSupervisioned.addClasse(new Class(3, [["seg", 2],["ter", 2]],null));
+
     sem.addClasse(new Class(1, [["seg", 1],["ter", 1]],null));
+    semSupervisioned.addClasse(new Class(1, [["seg", 1],["ter", 1]],null));
+
     sem.addClasse(new Class(2, [["qui", 2],["qua", 2]],null));
+    semSupervisioned.addClasse(new Class(2, [["qui", 2],["qua", 2]],null));
+
     sem.addClasse(new Class(4, [["qui", 1],["sex", 1]],null));
+    semSupervisioned.addClasse(new Class(4, [["qui", 1],["sex", 1]],null));
+
     sem.addClasse(new Class(11,[["seg", 2],["ter", 1]],null));
+    semSupervisioned.addClasse(new Class(11,[["seg", 2],["ter", 1]],null));
 
-    //Creating Student (id, semester initial)
-    var student = new Students(100,null, "2011.1", false);
-    student.addClass(sem.getDiscipline(1), Mention.RPC);
-    student.addClass(sem.getDiscipline(1), Mention.RPC);
-    student.addClass(sem.getDiscipline(1), Mention.RPC);
-    student.addClass(sem.getDiscipline(3));
-
-    //Adding student in course
-    course.addStudent(student);
+    document.getElementById('fileClassific').onchange = function(){ readFileByLine(this, addStudentsByDatas)};
+    document.getElementById('fileSupervisioned').onchange = function(){ readFileByLine(this, addStudentsByDatasSupervisioned)};
+    document.getElementById('getDataStudent').onclick = printDataSpecifcStudent;
 
     //Creating Statistic object
-    var statistic = new Statistic(student);
+    //var statistic = new Statistic(student);
     //print Data
-    statistic.printData();
+    //statistic.printData();
 
 };
 
+function addStudentsByDatas(datas){
+
+    for(var i=0; i<datas.length; i++){
+        //Creating Student (id, course, semester initial, evasor)
+        var d = datas[i].split(";");
+        //console.log(d);
+        var student = new Students( parseInt(d[0]),null,d[1], Boolean(d[2]));
+
+        for(var j=3; j<d.length;j++){
+            //console.log(d[j])
+            var dsem = d[j].split("|");
+            var semester = course.findSemester(dsem[0]);
+            for(l=1; l<dsem.length; l++){
+              //console.log(dsem[l])
+              var disc = dsem[l].split(",");
+              student.addClass(semester.getDiscipline(disc[0]), Mention.getMention(disc[1]));
+            }
+        }
+
+        //Adding student in course
+        course.addStudent(student);
+
+        //var statistic = new Statistic(student);
+        //print Data
+        //statistic.printData();
+    }
+
+    //Adding lista in html for all students
+    list = document.getElementById("studentslist");
+    sts = course.getStudents();
+    for(var i=0; i<sts.length; i++){
+        //console.log(sts[i]);
+        node = document.createElement("option");
+        textnode = document.createTextNode(sts[i].id);
+        node.appendChild(textnode);
+        list.appendChild(node);
+    }
+
+}
 
 
+
+function addStudentsByDatasSupervisioned(datas){
+
+    for(var i=0; i<datas.length; i++){
+        //Creating Student (id, course, semester initial, evasor)
+        var d = datas[i].split(";");
+        //console.log(d);
+        var student = new Students( parseInt(d[0]),null,d[1], Boolean(d[2]));
+
+        for(var j=3; j<d.length;j++){
+            //console.log(d[j])
+            var dsem = d[j].split("|");
+            var semester = courseSupervisioned.findSemester(dsem[0]);
+            for(l=1; l<dsem.length; l++){
+                //console.log(dsem[l])
+                var disc = dsem[l].split(",");
+                student.addClass(semester.getDiscipline(disc[0]), Mention.getMention(disc[1]));
+            }
+        }
+
+        //Adding student in course
+        courseSupervisioned.addStudent(student);
+    }
+}
+
+function printDataSpecifcStudent(){
+    var e = document.getElementById("studentslist");
+    var idStudent = e.options[e.selectedIndex].value;
+
+    var statistic = new Statistic(course.findStudent(parseInt(idStudent)));
+
+    elem = document.getElementById("tdc");
+    elem.innerHTML = "Total amount disciplines Coursed: "+statistic.disciplinesCoursed
+
+    elem = document.getElementById("tdr");
+    elem.innerHTML = "Total amount disciplines Approved: "+statistic.disciplinesRetention;
+
+    elem = document.getElementById("tda");
+    elem.innerHTML = "Total amount disciplines Disapproved: "+statistic.disciplinesSucess;
+
+    elem = document.getElementById("adc");
+    elem.innerHTML = "Average of disciplines coursed by semester: "+statistic.averageDisciplinesCoursedBySemester;
+
+
+    table = document.getElementById("tabledata");
+
+
+    for(var i=0; i<statistic.disciplines.length; i++){
+        tr = document.createElement("TR");
+        td = document.createElement("TD");
+        td.innerHTML = statistic.disciplines[i].name;
+
+        tr.appendChild(td);
+        td = document.createElement("TD");
+        td.innerHTML = statistic.disciplines[i].success;
+
+        tr.appendChild(td);
+        td = document.createElement("TD");
+        td.innerHTML = statistic.disciplines[i].retention+" times";
+
+        tr.appendChild(td);
+        td = document.createElement("TD");
+        td.innerHTML = statistic.disciplines[i].porcentSucess+" %";
+        tr.appendChild(td);
+
+        td = document.createElement("TD");
+        td.innerHTML = statistic.disciplines[i].mostApproval+" ("+statistic.disciplines[i].porcentMostApproval+"%)";
+        tr.appendChild(td);
+
+        td = document.createElement("TD");
+        td.innerHTML = statistic.disciplines[i].amoutDiscNoCouserd;
+        tr.appendChild(td);
+        stringRisk="";
+        for(var j=0; j<+statistic.disciplines[i].disciplinesRisk.length;j++){
+            stringRisk+= statistic.disciplines[i].disciplinesRisk[j].name+" |";
+        }
+
+        td = document.createElement("TD");
+        td.innerHTML = stringRisk;
+        tr.appendChild(td);
+
+        table.appendChild(tr);
+    }
+
+   // statistic.printData();
+}
 
 function createDisciplines(course){
     //Creating Disciplines and adding in course
